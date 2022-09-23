@@ -15,7 +15,7 @@ namespace CredProvider.NET
         private CredentialView view;
         private _CREDENTIAL_PROVIDER_USAGE_SCENARIO usage;
 
-        private List<ICredentialProviderUser> providerUsers;
+        private List<ICredentialProviderUser> providerUsers = new();
 
         public virtual int SetUsageScenario(_CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus, uint dwFlags)
         {
@@ -118,7 +118,7 @@ namespace CredProvider.NET
 
         public virtual int SetUserArray(ICredentialProviderUserArray users)
         {
-            this.providerUsers = new List<ICredentialProviderUser>();
+            this.providerUsers.Clear();
 
             users.GetCount(out uint count);
             users.GetAccountOptions(out CREDENTIAL_PROVIDER_ACCOUNT_OPTIONS options);
@@ -137,18 +137,34 @@ namespace CredProvider.NET
                 Logger.Write($"providerId: {providerId}; sid: {sid}");
             }
 
+            Logger.Write($"Set providerUsers to array with length {this.providerUsers.Count}");
+
             return HRESULT.S_OK;
         }
 
         //Lookup the user by index and return the sid
         public virtual string GetUserSid(int dwIndex)
         {
-            Logger.Write();
+            Logger.Write($"Total users: {providerUsers.Count}");
+            string sid = string.Empty;
 
             //CredUI does not provide user sids, so return null
-            if (this.providerUsers.Count < dwIndex + 1) return null;
+            if (this.providerUsers.Count < dwIndex + 1)
+            {
+                Logger.Write($"Not enough users in the array, total {providerUsers.Count} users, asking for #{dwIndex}");
+                return sid;
+            }
 
-            this.providerUsers[dwIndex].GetSid(out string sid);
+            try
+            {
+                this.providerUsers[dwIndex].GetSid(out sid);
+                Logger.Write($"returning user {sid}");
+            }
+            catch (Exception e)
+            {
+                Logger.Write($"Exception getting user {dwIndex}: {e.Message}");
+            }
+            
             return sid;
         }
     }

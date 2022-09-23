@@ -6,8 +6,8 @@ namespace CredProvider.NET
 {
     internal static class Logger
     {
-        private static string path;
-        private static readonly object signal = new object();
+        private static string? path = default;
+        private static readonly object signal = new();
 
         static Logger()
         {
@@ -30,13 +30,13 @@ namespace CredProvider.NET
             set { Console.SetOut(value); }
         }
 
-        public static void Write(string line = null, string caller = null)
+        public static void Write(string? line = default, string? caller = default)
         {
             if (string.IsNullOrWhiteSpace(caller))
             {
-                var method = new StackTrace().GetFrame(1).GetMethod();
+                var method = new StackTrace()?.GetFrame(1)?.GetMethod();
 
-                caller = $"{method.DeclaringType?.Name}.{method.Name}";
+                caller = $"{method?.DeclaringType?.Name}.{method?.Name}";
             }
 
             var log = $"{DateTimeOffset.UtcNow:u} [{caller}]";

@@ -10,7 +10,7 @@ namespace CredProvider.NET
     [ProgId("CredProvider.NET")]
     public class CredentialProvider : CredentialProviderBase
     {
-        public static CredentialView NotActive;        
+        public static CredentialView? NotActive = default;
 
         public CredentialProvider()
         {

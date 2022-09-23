@@ -1,16 +1,16 @@
 ﻿using CredProvider.NET.Interop2;
-using System;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using static CredProvider.NET.Constants;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace CredProvider.NET
 {
+    //[ComVisible(true)]
+    //[Guid("B595E6F9-5170-41B0-8ACE-2C19E54BE30C")]
+    //[ClassInterface(ClassInterfaceType.None)]
+    //[ProgId("CredProvider.NET")]
     public class CredentialProviderCredential : ICredentialProviderCredential2
     {
         private readonly CredentialView view;
@@ -82,7 +82,7 @@ namespace CredProvider.NET
             return HRESULT.S_OK;
         }
 
-        private Bitmap tileIcon;
+        private Bitmap? tileIcon = null;
 
         public virtual int GetBitmapValue(uint dwFieldID, out IntPtr phbmp)
         {
@@ -104,13 +104,14 @@ namespace CredProvider.NET
 
         private void TryLoadUserIcon()
         {
+            Logger.Write();
+
             if (tileIcon == null)
             {
-                var fileName = "CredProvider.NET.tile-icon.bmp";
-                var assembly = Assembly.GetExecutingAssembly();
-                var stream = assembly.GetManifestResourceStream(fileName);
-
-                tileIcon = (Bitmap)Image.FromStream(stream);
+                // This needs to match your final installation destination.
+                // For testing purposes, it's easiest to create that destination file manually.
+                string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles), "CredentialProvider.Net6", "tile-icon.bmp");
+                tileIcon = new Bitmap(path);
             }
         }
 

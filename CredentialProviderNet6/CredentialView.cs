@@ -5,19 +5,22 @@ using System.Runtime.InteropServices;
 
 namespace CredProvider.NET
 {
+    //[ComVisible(true)]
+    //[Guid("40D4A157-993B-42F8-AE8B-65AF2EB80A2C")]
+    //[ClassInterface(ClassInterfaceType.None)]
+    //[ProgId("CredProvider.NET")]
     public class CredentialDescriptor
     {
         public _CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR Descriptor { get; set; }
 
         public _CREDENTIAL_PROVIDER_FIELD_STATE State { get; set; }
 
-        public object Value { get; set; }
+        public object Value { get; set; } = new();
     }
 
     public class CredentialView
     {
-        private readonly List<CredentialDescriptor> fields
-            = new List<CredentialDescriptor>();
+        private readonly List<CredentialDescriptor> fields = new();
 
         public CredentialProviderBase Provider { get; private set; }
 
@@ -42,8 +45,8 @@ namespace CredProvider.NET
             _CREDENTIAL_PROVIDER_FIELD_TYPE cpft,
             string pszLabel,
             _CREDENTIAL_PROVIDER_FIELD_STATE state,
-            string defaultValue = null,
-            Guid guidFieldType = default(Guid)
+            string? defaultValue = null,
+            Guid guidFieldType = default
         )
         {
             if (!Active)
@@ -54,7 +57,7 @@ namespace CredProvider.NET
             fields.Add(new CredentialDescriptor
             {
                 State = state,
-                Value = defaultValue,
+                Value = defaultValue ?? string.Empty,
                 Descriptor = new _CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR
                 {
                     dwFieldID = (uint)fields.Count,
@@ -117,7 +120,7 @@ namespace CredProvider.NET
         {
             Logger.Write();
 
-            if (credentials.TryGetValue(dwIndex, out ICredentialProviderCredential credential))
+            if (credentials.TryGetValue(dwIndex, out ICredentialProviderCredential? credential))
             {
                 Logger.Write("Returning existing credential.");
                 return credential;
@@ -125,8 +128,19 @@ namespace CredProvider.NET
 
             //Get the sid for this credential from the index
             var sid = this.Provider.GetUserSid(dwIndex);
+            Logger.Write($"Got this new sid: {sid}");
 
-            credential = new CredentialProviderCredential(this, sid);
+            try
+            {
+                credential = new CredentialProviderCredential(this, sid);
+                Logger.Write($"New credential created successfully");
+            }
+            catch (Exception e)
+            {
+                Logger.Write($"Exception thrown: {e.Message}");
+                throw;
+            }
+            
 
             credentials[dwIndex] = credential;
 
