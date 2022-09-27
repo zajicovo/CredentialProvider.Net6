@@ -8,14 +8,14 @@ namespace CredProvider.NET
 {
     public abstract class CredentialProviderBase : ICredentialProvider, ICredentialProviderSetUserArray
     {
-        private ICredentialProviderEvents events;
+        private ICredentialProviderEvents? events;
 
         protected abstract CredentialView Initialize(_CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus, uint dwFlags);
 
-        private CredentialView view;
+        private CredentialView? view;
         private _CREDENTIAL_PROVIDER_USAGE_SCENARIO usage;
 
-        private List<ICredentialProviderUser> providerUsers = new();
+        private readonly List<ICredentialProviderUser> providerUsers = new();
 
         public virtual int SetUsageScenario(_CREDENTIAL_PROVIDER_USAGE_SCENARIO cpus, uint dwFlags)
         {
@@ -68,7 +68,7 @@ namespace CredProvider.NET
         {
             Logger.Write();
 
-            pdwCount = (uint)view.DescriptorCount;
+            pdwCount = (uint)(view?.DescriptorCount ?? 0);
 
             Logger.Write($"Returning field count: {pdwCount}");
 
@@ -77,7 +77,7 @@ namespace CredProvider.NET
 
         public virtual int GetFieldDescriptorAt(uint dwIndex, [Out] IntPtr ppcpfd)
         {
-            if (view.GetField((int)dwIndex, ppcpfd))
+            if (view?.GetField((int)dwIndex, ppcpfd) ?? false)
             {
                 return HRESULT.S_OK;
             }
@@ -93,20 +93,20 @@ namespace CredProvider.NET
         {
             Logger.Write();
 
-            pdwCount = (uint)view.CredentialCount;
+            pdwCount = (uint)(view?.CredentialCount ?? 0);
 
-            pdwDefault = (uint)view.DefaultCredential;
+            pdwDefault = (uint)(view?.DefaultCredential ?? 0);
 
             pbAutoLogonWithDefault = 0;
 
             return HRESULT.S_OK;
         }
 
-        public virtual int GetCredentialAt(uint dwIndex, out ICredentialProviderCredential ppcpc)
+        public virtual int GetCredentialAt(uint dwIndex, out ICredentialProviderCredential? ppcpc)
         {
             Logger.Write($"dwIndex: {dwIndex}");
 
-            ppcpc = view.CreateCredential((int)dwIndex);
+            ppcpc = view?.CreateCredential((int)dwIndex);
 
             return HRESULT.S_OK;
         }

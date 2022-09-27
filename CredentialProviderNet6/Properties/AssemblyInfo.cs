@@ -5,14 +5,18 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-//[assembly: AssemblyTitle("CredProvider.NET")]
-//[assembly: AssemblyDescription("")]
-//[assembly: AssemblyConfiguration("")]
-//[assembly: AssemblyCompany("")]
-//[assembly: AssemblyProduct("CredProvider.NET")]
-//[assembly: AssemblyCopyright("Copyright ©  2017")]
-//[assembly: AssemblyTrademark("")]
-//[assembly: AssemblyCulture("")]
+[assembly: AssemblyTitle("CredProvider.NET")]
+[assembly: AssemblyDescription("Windows Credential Provider in .NET6")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("CredProvider.NET")]
+[assembly: AssemblyCopyright("Copyright © 2017-2022")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+
+// Set to run on Windows only (which is anyway the case), to get rid of all the
+// annoying warnings about Windows-specific calls reachable from other platforms
+[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
 // to COM components.  If you need to access a type in this assembly from
@@ -32,5 +36,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-//[assembly: AssemblyVersion("1.0.0.0")]
-//[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

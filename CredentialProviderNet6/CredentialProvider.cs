@@ -27,7 +27,7 @@ namespace CredProvider.NET
             
             if (!isSupported)
             {
-                if (NotActive == null) NotActive = new CredentialView(this) { Active = false };
+                NotActive ??= new CredentialView(this) { Active = false };
                 return NotActive;
             }
 
