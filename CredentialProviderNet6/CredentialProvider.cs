@@ -1,5 +1,4 @@
 ﻿using CredProvider.NET.Interop2;
-using System;
 using System.Runtime.InteropServices;
 
 namespace CredProvider.NET

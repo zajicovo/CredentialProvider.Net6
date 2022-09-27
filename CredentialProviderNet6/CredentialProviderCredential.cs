@@ -1,16 +1,10 @@
 ﻿using CredProvider.NET.Interop2;
 using System.Drawing;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using static CredProvider.NET.Constants;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CredProvider.NET
 {
-    //[ComVisible(true)]
-    //[Guid("B595E6F9-5170-41B0-8ACE-2C19E54BE30C")]
-    //[ClassInterface(ClassInterfaceType.None)]
-    //[ProgId("CredProvider.NET")]
     public class CredentialProviderCredential : ICredentialProviderCredential2
     {
         private readonly CredentialView view;

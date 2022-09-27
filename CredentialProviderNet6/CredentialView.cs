@@ -1,14 +1,8 @@
 ﻿using CredProvider.NET.Interop2;
-using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace CredProvider.NET
 {
-    //[ComVisible(true)]
-    //[Guid("40D4A157-993B-42F8-AE8B-65AF2EB80A2C")]
-    //[ClassInterface(ClassInterfaceType.None)]
-    //[ProgId("CredProvider.NET")]
     public class CredentialDescriptor
     {
         public _CREDENTIAL_PROVIDER_FIELD_DESCRIPTOR Descriptor { get; set; }
