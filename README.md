@@ -6,7 +6,7 @@ The process to register .NET6 binaries to COM is a bit different from .NET Frame
 
 ```sh
 # at first, publish the project to make sure all dependencies will be found in runtime
-dotnet publish CredentialProvider.Net6.csproj -c Release -r win-x64  # and perhaps some other arguments of your choice
+dotnet publish CredentialProvider.Net6.csproj -c Release -r win-x64 # and perhaps some other arguments of your choice
 
 # now register the *.comhost.dll
 regsvr32 bin\Release\net6\win-x64\publish\CredentialProvider.Net6.comhost.dll
